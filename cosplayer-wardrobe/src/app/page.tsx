@@ -43,13 +43,13 @@ export default async function HomePage() {
         />
         <div className="absolute inset-0 bg-black/50 z-10"></div>
         <div className="relative z-20">
-          {/* <p className="text-lg text-white">Welcome to Cosplayer Wardrobe</p> */}
+          <p className="text-lg text-white">Welcome to Cosplayer Wardrobe</p>
           <h1 className="text-5xl font-extrabold mt-2 text-white">MAU COSPLAY</h1>
           <h1 className="text-5xl font-extrabold text-white">APA HARI INI?</h1>
         </div>
       </section>
 
-      {/* Bagian Saran Kostum */}
+      {/* Bagian Saran Kostum */} 
       <section>
         <div className="bg-[#2D2D2D] p-8 rounded-2xl">
           <h2 className="text-3xl font-bold mb-6 text-white">Saran kostum untuk kamu</h2>
