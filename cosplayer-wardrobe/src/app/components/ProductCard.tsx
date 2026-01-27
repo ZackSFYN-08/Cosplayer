@@ -25,10 +25,20 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <Image
           src={imageUrl} 
           alt={product.name}
-          fill // Next.js 16/15 standar: menggunakan fill daripada layout="fill"
+          fill 
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
           className="object-cover group-hover:scale-105 transition-transform duration-300"
           priority={false}
+        />
+      </div>
+      <div className="relative w-full h-48 overflow-hidden">
+        <Image
+          src={imageUrl} 
+          alt={product.name}
+          fill
+          style={{ objectFit: 'cover' }} // TAMBAHKAN INI bro
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="group-hover:scale-105 transition-transform duration-300"
         />
       </div>
       <div className="p-4">
