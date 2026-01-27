@@ -8,6 +8,7 @@ import { Star } from 'lucide-react';
 async function getProducts() {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    // Memastikan tidak ada cache agar data dari Atlas langsung muncul
     const res = await fetch(`${apiUrl}/products`, { cache: 'no-store' });
     
     if (!res.ok) throw new Error('Failed to fetch data');
@@ -20,12 +21,13 @@ async function getProducts() {
 
 export default async function BrowsePage() {
   const allProducts: Product[] = await getProducts();
+  
   // Ambil 3 produk secara acak untuk bagian "terlaris"
   const bestSellers = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 3);
   const series = ["Naruto", "One Piece", "Genshin Impact", "Pokemon"];
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 text-white">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         
         {/* Kolom Kiri: Terlaris & Daftar Semua */}
@@ -33,23 +35,30 @@ export default async function BrowsePage() {
           <section className="bg-[#2D2D2D] p-6 rounded-2xl">
             <h2 className="text-2xl font-bold mb-4">Kostum terlaris bulan ini</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {bestSellers.map(product => (
+              {bestSellers.length > 0 ? bestSellers.map(product => (
                  <div key={product._id} className="bg-[#3C3C3C] rounded-xl overflow-hidden group">
                     <div className="relative w-full h-48">
-                        <Image src={product.imageUrl} alt={product.name} layout="fill" objectFit="cover" className="group-hover:scale-105 transition-transform duration-300"/>
+                        <Image 
+                          src={product.imageUrl || '/images/placeholder.png'} 
+                          alt={product.name} 
+                          fill 
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                          style={{ objectFit: 'cover' }} 
+                          className="group-hover:scale-105 transition-transform duration-300"
+                        />
                     </div>
                     <div className="p-3">
-                        <h3 className="font-semibold text-white truncate">{product.name}</h3>
+                        <h3 className="font-semibold truncate">{product.name}</h3>
                         <div className="flex justify-between items-center text-sm mt-1">
                             <p className="text-gray-300">Rp{product.price.toLocaleString('id-ID')}</p>
                             <div className="flex items-center space-x-1">
                                 <Star className="text-yellow-400 fill-current" size={14} />
-                                <span className="text-gray-300">{product.rating}</span>
+                                <span>{product.rating}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-              ))}
+              )) : <p className="text-gray-400">Belum ada data produk.</p>}
             </div>
           </section>
 
@@ -64,13 +73,16 @@ export default async function BrowsePage() {
         </div>
 
         {/* Kolom Kanan: Sesuai Series */}
-        <aside className="lg:col-span-1 sticky top-24">
+        <aside className="lg:col-span-1 lg:sticky lg:top-24">
           <div className="bg-[#2D2D2D] p-6 rounded-2xl">
             <h3 className="text-xl font-bold mb-4">Kostum sesuai series</h3>
             <div className="space-y-3">
               {series.map(s => (
                 <div key={s} className="flex items-center space-x-4 bg-[#3C3C3C] p-4 rounded-lg hover:bg-[#4a4a4a] transition-colors cursor-pointer">
-                    <div className="w-12 h-12 bg-[#4F4F4F] rounded-lg"></div>
+                    {/* Placeholder untuk icon series */}
+                    <div className="w-12 h-12 bg-[#4F4F4F] rounded-lg flex items-center justify-center text-xs text-gray-400">
+                      IMG
+                    </div>
                     <span className="font-semibold">{s}</span>
                 </div>
               ))}
