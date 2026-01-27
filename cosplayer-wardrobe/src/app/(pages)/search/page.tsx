@@ -21,9 +21,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const query = searchParams.q || '';
   const products = await getProducts();
 
-  const filteredProducts = products.filter((product: any) =>
-    product.name.toLowerCase().includes(query.toLowerCase())
-  );
+  console.log('PRODUCTS FROM API:', products);
+
+  const filteredProducts = query
+  ? products.filter((product: any) =>
+      product.name.toLowerCase().includes(query.toLowerCase())
+    )
+  : products; // <-- kalau query kosong, tampilkan semua
+
 
   return (
     <div className="bg-[#2D2D2D] p-8 rounded-2xl">
@@ -32,16 +37,17 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       </h1>
 
       {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredProducts.map((product: any) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
-        </div>
-      ) : (
-        <p className="text-center text-gray-400 text-lg">
-          Kostum untuk "{query}" tidak ditemukan.
-        </p>
-      )}
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {filteredProducts.map((product: any) => (
+      <ProductCard key={product._id} product={product} />
+    ))}
+  </div>
+) : (
+  <p className="text-center text-gray-400 text-lg">
+    Kostum untuk "{query}" tidak ditemukan.
+  </p>
+)}
+
     </div>
   );
 }
